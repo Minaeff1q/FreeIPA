@@ -9,7 +9,7 @@
         state: present
       loop:
         - epel-release
-        - https://download-cc-rdu01.fedoraproject.org/pub/epel/7/x86_64/Packages/f/freeipa-server-4.6.8-5.el7.x86_64.rpm
+        - ftp://ftp.icm.edu.pl/vol/rzm7/linux-centos-vault/7.9.2009/updates/x86_64/Packages/ipa-server-4.6.8-5.el7.centos.16.x86_64.rpm
 
     - name: Install necessary packages for FreeIPA server
       yum:
