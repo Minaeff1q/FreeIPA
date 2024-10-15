@@ -1,0 +1,21 @@
+---
+- name: Install FreeIPA Client on CentOS
+  hosts: ipa_clients
+  become: yes
+  tasks:
+    - name: Ensure that EPEL and FreeIPA repositories are enabled
+      yum:
+        name: epel-release
+        state: present
+
+    - name: Install ipa-client package
+      yum:
+        name: ipa-client
+        state: present
+
+    - name: Enroll the client to the IPA server (unattended)
+      command: >
+        ipa-client-install --unattended
+        --domain=mc.local
+        --realm=MC.LOCAL
+        --server=minaev-project-vm-dc.mcs.local

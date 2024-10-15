@@ -1,0 +1,38 @@
+---
+- name: Install FreeIPA Server on CentOS
+  hosts: ipa_server
+  become: yes
+  tasks:
+    - name: Ensure that EPEL and FreeIPA repositories are enabled
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - epel-release
+        - https://download-cc-rdu01.fedoraproject.org/pub/epel/7/x86_64/Packages/f/freeipa-server-4.6.8-5.el7.x86_64.rpm
+
+    - name: Install necessary packages for FreeIPA server
+      yum:
+        name:
+          - ipa-server
+          - bind
+          - bind-dyndb-ldap
+          - ipa-server-dns
+        state: present
+
+    - name: Install and configure FreeIPA server (unattended)
+      command: >
+        ipa-server-install --unattended
+        --domain=mc.local
+        --realm=MC.LOCAL
+        --ds-password=1234
+        --admin-password=1234
+        --setup-dns
+        --no-forwarders
+      when: ansible_facts['hostname'] == "minaev-project-vm-dc.mcs.local"
+
+    - name: Start and enable IPA services
+      systemd:
+        name: ipa
+        enabled: yes
+        state: started
