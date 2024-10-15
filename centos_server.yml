@@ -25,11 +25,10 @@
         ipa-server-install --unattended
         --domain=mc.local
         --realm=MC.LOCAL
-        --ds-password=1234
-        --admin-password=1234
+        --ds-password=12345678
+        --admin-password=12345678
         --setup-dns
         --no-forwarders
-      when: ansible_facts['hostname'] == "minaev-project-vm-dc.mcs.local"
 
     - name: Start and enable IPA services
       systemd:

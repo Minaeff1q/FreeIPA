@@ -13,9 +13,18 @@
         name: ipa-client
         state: present
 
+    - name: Ensure the IPA server entry is in /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        state: present
+        line: "192.168.254.101 minaev-project-vm-dc.novalocal"
+        backup: yes
+
     - name: Enroll the client to the IPA server (unattended)
       command: >
         ipa-client-install --unattended
         --domain=mc.local
         --realm=MC.LOCAL
-        --server=minaev-project-vm-dc.mcs.local
+        --server=minaev-project-vm-dc.novalocal
+        --force-ntpd
+        --password=12345678
