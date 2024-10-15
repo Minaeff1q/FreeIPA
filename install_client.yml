@@ -1,0 +1,16 @@
+---
+- name: Install FreeIPA Client
+  hosts: ipa_clients
+  become: yes
+  tasks:
+    - name: Install ipa-client package
+      yum:
+        name: ipa-client
+        state: present
+
+    - name: Enroll the client to the IPA server
+      command: >
+        ipa-client-install --unattended
+        --domain=mc.local
+        --realm=MC.LOCAL
+        --server=minaev-project-vm-dc.mcs.local

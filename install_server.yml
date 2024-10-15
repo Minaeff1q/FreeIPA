@@ -1,0 +1,27 @@
+---
+- name: Install FreeIPA Server
+  hosts: ipa_server
+  become: yes
+  tasks:
+    - name: Install necessary packages
+      yum:
+        name:
+          - ipa-server
+          - bind
+          - bind-dyndb-ldap
+        state: present
+
+    - name: Install and configure FreeIPA server
+      command: >
+        ipa-server-install --unattended
+        --domain=mc.local
+        --realm=MC.LOCAL
+        --ds-password=1234
+        --admin-password=1234
+      when: ansible_facts['hostname'] == "minaev-project-vm-dc.mcs.local"
+
+    - name: Start and enable ipa services
+      systemd:
+        name: ipa
+        enabled: yes
+        state: started
